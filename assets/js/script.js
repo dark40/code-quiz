@@ -7,10 +7,13 @@ var quizEl=document.querySelector(".quiz");
 var questionEl=document.querySelector("#question");
 var optionEl=document.querySelector("#option");
 var answerEl=document.querySelector("#answer");
+var endingEl=document.querySelector(".ending");
+var scoreEl=document.querySelector("#score");
 
 
-// Hide questions
+// Hide questions, ending
 quizEl.setAttribute("style", "display: none;");
+endingEl.setAttribute("style","display: none;");
 
 // Questions
 var quiz_1 = {
@@ -76,6 +79,8 @@ function setTime () {
 }
 
 var i = 0;
+var pickedAnswer="";
+var score = 0;
 
 // Post quiz question and options
 function postQuiz() {
@@ -85,29 +90,37 @@ function postQuiz() {
         optionEl.children[2].textContent = quiz_all[i]["options"][2];
         optionEl.children[3].textContent = quiz_all[i]["options"][3];
 
-        optionEl.addEventListener("click", evaluateQuiz);
+        
+        optionEl.children[0].addEventListener("click", function(){pickedAnswer=optionEl.children[0].textContent; evaluateQuiz();});
+        optionEl.children[1].addEventListener("click", function(){pickedAnswer=optionEl.children[1].textContent; evaluateQuiz();});
+        optionEl.children[2].addEventListener("click", function(){pickedAnswer=optionEl.children[2].textContent; evaluateQuiz();});
+        optionEl.children[3].addEventListener("click", function(){pickedAnswer=optionEl.children[3].textContent; evaluateQuiz();});
+
     }  
 
 
 // Evaluate the answers and add/minus time
-function evaluateQuiz(event) {
-    event.preventDefault();
+function evaluateQuiz() {
+    if (!pickedAnswer) {
+        return;
+    } else if (i < quiz_all.length) {
+        optionEl.children[0].replaceWith( optionEl.children[0].cloneNode(true));
+        optionEl.children[1].replaceWith( optionEl.children[0].cloneNode(true));
+        optionEl.children[2].replaceWith( optionEl.children[0].cloneNode(true));
+        optionEl.children[3].replaceWith( optionEl.children[0].cloneNode(true));
 
-    var pickedAnswer = event.target;
-
-    if (pickedAnswer === quiz_all[i]["correct"]) {
-        answerEl.textContent = "Correct";
-        score = score + 10; 
-    } else {
-        answerEl.textContent = "Wrong";
-        secondsLeft = secondsLeft - 10;
-    }
-
-    if (i<6) {
-        i++;
+        if (pickedAnswer === quiz_all[i]["correct"]) {
+            answerEl.textContent = "Correct";
+            pickedAnswer= "";
+            score += 10; 
+            //scoreEl.textContent = "Your final score is " + score;
+        } else {
+            answerEl.textContent = "Wrong";
+            secondsLeft = secondsLeft - 20;
+            pickedAnswer= "";  
+        }
+        i += 1;
         postQuiz();
-    } else {
-
-    }
+    } 
 
 }
