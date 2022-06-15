@@ -29,7 +29,7 @@ p {
    
 }
 
-#start {
+button {
     background-color: blueviolet;
     color: white;
     border-radius: 4px; 
@@ -37,7 +37,7 @@ p {
     box-shadow: none;
 }
 
-#start:hover {
+button:hover {
     opacity: 80%;
 }
 

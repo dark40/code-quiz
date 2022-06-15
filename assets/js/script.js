@@ -1,19 +1,22 @@
 // Select elements
-var timeEl=document.querySelector("#time");
-var quizEl=document.querySelector(".quiz");
-var startBtn=document.querySelector("#start");
-var introEl=document.querySelector(".intro");
-var quizEl=document.querySelector(".quiz");
-var questionEl=document.querySelector("#question");
-var optionEl=document.querySelector("#option");
-var answerEl=document.querySelector("#answer");
-var endingEl=document.querySelector(".ending");
-var scoreEl=document.querySelector("#score");
+var timeEl = document.querySelector("#time");
+var quizEl = document.querySelector(".quiz");
+var startBtn = document.querySelector("#start");
+var introEl = document.querySelector(".intro");
+var quizEl = document.querySelector(".quiz");
+var questionEl = document.querySelector("#question");
+var optionEl = document.querySelector("#option");
+var answerEl = document.querySelector("#answer");
+var endingEl = document.querySelector(".ending");
+var scoreEl = document.querySelector("#score");
+var initialEl = document.querySelector("#initials");
+var submitBtn = document.querySelector("#submit")
 
 
-// Hide questions, ending
+
+// Hide questions, ending, highscores
 quizEl.setAttribute("style", "display: none;");
-endingEl.setAttribute("style","display: none;");
+endingEl.setAttribute("style", "display: none;");
 
 // Questions
 var quiz_1 = {
@@ -55,7 +58,7 @@ var quiz_6 = {
 var quiz_all = [quiz_1, quiz_2, quiz_3, quiz_4, quiz_5, quiz_6];
 
 // Start Button
-startBtn.addEventListener("click",function() {
+startBtn.addEventListener("click", function () {
     introEl.setAttribute("style", "display: none;");
     quizEl.setAttribute("style", "display: block;");
     setTime();
@@ -67,60 +70,87 @@ startBtn.addEventListener("click",function() {
 // Set a timer counting down 75s.
 var secondsLeft = 75;
 
-function setTime () {
-    var timerInterval = setInterval(function() {
+function setTime() {
+    var timerInterval = setInterval(function () {
         secondsLeft--;
         timeEl.textContent = "Time: " + secondsLeft;
 
-        if (secondsLeft === 0) {
+        if (secondsLeft < 0) {
             clearInterval(timerInterval);
+            addList();
         }
     }, 1000)
 }
 
 var i = 0;
-var pickedAnswer="";
+var pickedAnswer = "";
 var score = 0;
 
 // Post quiz question and options
 function postQuiz() {
-        questionEl.textContent = quiz_all[i]["question"];
-        optionEl.children[0].textContent = quiz_all[i]["options"][0];
-        optionEl.children[1].textContent = quiz_all[i]["options"][1];
-        optionEl.children[2].textContent = quiz_all[i]["options"][2];
-        optionEl.children[3].textContent = quiz_all[i]["options"][3];
+    questionEl.textContent = quiz_all[i]["question"];
+    optionEl.children[0].textContent = quiz_all[i]["options"][0];
+    optionEl.children[1].textContent = quiz_all[i]["options"][1];
+    optionEl.children[2].textContent = quiz_all[i]["options"][2];
+    optionEl.children[3].textContent = quiz_all[i]["options"][3];
 
-        
-        optionEl.children[0].addEventListener("click", function(){pickedAnswer=optionEl.children[0].textContent; evaluateQuiz();});
-        optionEl.children[1].addEventListener("click", function(){pickedAnswer=optionEl.children[1].textContent; evaluateQuiz();});
-        optionEl.children[2].addEventListener("click", function(){pickedAnswer=optionEl.children[2].textContent; evaluateQuiz();});
-        optionEl.children[3].addEventListener("click", function(){pickedAnswer=optionEl.children[3].textContent; evaluateQuiz();});
 
-    }  
+    optionEl.children[0].addEventListener("click", function () { pickedAnswer = optionEl.children[0].textContent; evaluateQuiz(); });
+    optionEl.children[1].addEventListener("click", function () { pickedAnswer = optionEl.children[1].textContent; evaluateQuiz(); });
+    optionEl.children[2].addEventListener("click", function () { pickedAnswer = optionEl.children[2].textContent; evaluateQuiz(); });
+    optionEl.children[3].addEventListener("click", function () { pickedAnswer = optionEl.children[3].textContent; evaluateQuiz(); });
+
+}
 
 
 // Evaluate the answers and add/minus time
 function evaluateQuiz() {
     if (!pickedAnswer) {
         return;
-    } else if (i < quiz_all.length) {
-        optionEl.children[0].replaceWith( optionEl.children[0].cloneNode(true));
-        optionEl.children[1].replaceWith( optionEl.children[0].cloneNode(true));
-        optionEl.children[2].replaceWith( optionEl.children[0].cloneNode(true));
-        optionEl.children[3].replaceWith( optionEl.children[0].cloneNode(true));
+    } else if (i < quiz_all.length - 1) {
+        optionEl.children[0].replaceWith(optionEl.children[0].cloneNode(true));
+        optionEl.children[1].replaceWith(optionEl.children[0].cloneNode(true));
+        optionEl.children[2].replaceWith(optionEl.children[0].cloneNode(true));
+        optionEl.children[3].replaceWith(optionEl.children[0].cloneNode(true));
 
         if (pickedAnswer === quiz_all[i]["correct"]) {
             answerEl.textContent = "Correct";
-            pickedAnswer= "";
-            score += 10; 
-            //scoreEl.textContent = "Your final score is " + score;
+            pickedAnswer = "";
+            score += 10;
         } else {
             answerEl.textContent = "Wrong";
             secondsLeft = secondsLeft - 20;
-            pickedAnswer= "";  
+            pickedAnswer = "";
         }
         i += 1;
         postQuiz();
-    } 
 
+    } else {
+        addList();
+        
+    }
+}
+
+function addList() {
+        quizEl.setAttribute("style", "display: none;");
+        endingEl.setAttribute("style", "display: block;");
+        scoreEl.textContent = "Your final score is " + score;
+
+        submitBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            var highScores = {
+                initials: initialEl.value,
+                scores: score
+            }
+
+            localStorage.setItem("highScores", JSON.stringify(highScores));
+            var tag = document.createElement("li");
+            tag.textContent = initialEl.value + " - " + score;
+            listEl.appendChild(tag);
+
+            highScoreEl.setAttribute("style", "display: block;");
+            endingEl.setAttribute("style", "display: none;");
+
+        })
 }
