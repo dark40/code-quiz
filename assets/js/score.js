@@ -5,18 +5,41 @@ var clearBtn = document.querySelector("#clearScore");
 
 
 // View high scores
+function init() {
+    var storedRecord = JSON.parse(localStorage.getItem("record"));
+
+    if (storedRecord !== null) {
+        record = storedRecord;
+    }
+
+    viewScore();
+}
+
 function viewScore() {
 
-    backBtn.addEventListener("click", function (event) {
-        event.preventDefault();
+    for (var j = 0; j < record.length; j++) {
+        var line = record[j];
 
-        highScoreEl.setAttribute("style", "display: none;");
-        introEl.setAttribute("style", "display: block;");
+        var li = document.createElement("li");
+        li.textContent = line;
+        li.setAttribute("data-index", j);
 
-    })
+        listEl.appendChild(li);
+    }
 
-    clearBtn.addEventListener("click", function (event) {
-        event.preventDefault();
-        localStorage.clear("highScores");
-    });
 }
+
+viewScore();
+
+
+
+backBtn.addEventListener("click", function (event) {
+    event.preventDefault();
+    window.location.href = "index.html";
+})
+
+clearBtn.addEventListener("click", function (event) {
+    event.preventDefault();
+    localStorage.clear();
+    viewScore();
+})

@@ -75,8 +75,9 @@ function setTime() {
         secondsLeft--;
         timeEl.textContent = "Time: " + secondsLeft;
 
-        if (secondsLeft < 0) {
+        if (secondsLeft <= 0) {
             clearInterval(timerInterval);
+            timeEl.textContent = "Time: 0";
             addList();
         }
     }, 1000)
@@ -131,6 +132,7 @@ function evaluateQuiz() {
     }
 }
 
+// Add the score to the local storage.
 function addList() {
         quizEl.setAttribute("style", "display: none;");
         endingEl.setAttribute("style", "display: block;");
@@ -144,13 +146,14 @@ function addList() {
                 scores: score
             }
 
-            localStorage.setItem("highScores", JSON.stringify(highScores));
-            var tag = document.createElement("li");
-            tag.textContent = initialEl.value + " - " + score;
-            listEl.appendChild(tag);
+            var recordText = highScores.initials + " - " + highScores.scores;
+            var record = [];
+            record.push(recordText);
 
-            highScoreEl.setAttribute("style", "display: block;");
-            endingEl.setAttribute("style", "display: none;");
+            localStorage.setItem("record", JSON.stringify(highScores));
+
+
+            window.location.href="score.html";
 
         })
 }
