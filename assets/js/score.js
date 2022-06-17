@@ -16,7 +16,7 @@ function viewScore() {
     }
 
    
-
+    // Append the record to the li elements
     for (var j = 0; j < records.length; j++) {
         var line = records[j];
 
@@ -32,11 +32,13 @@ function viewScore() {
 
 viewScore()
 
+// Go back button
 backBtn.addEventListener("click", function (event) {
     event.preventDefault();
     window.location.href = "index.html";
 })
 
+// Clear local storage button 
 clearBtn.addEventListener("click", function (event) {
     event.preventDefault();
     localStorage.clear();

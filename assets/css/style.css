@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-
+/* Style for header and introduction page */
 header {
     display: flex;
     justify-content: space-between;
@@ -44,6 +44,7 @@ button,
     opacity: 80%;
 }
 
+/* Style for quiz section */
 .quiz {
     display: flex;
     flex-direction: column;
@@ -73,11 +74,14 @@ button,
     color: blueviolet;
 }
 
+/* Style for answers */
 #answer {
     text-align: left;
     color: grey;
+    font-style: italic;
 }
 
+/* Style the ending page */
 .ending {
     display: inline-block;
     align-items: flex-start;
@@ -94,6 +98,7 @@ button,
 }
 
 
+/* Style for the highscore page */
 .highScores,
 .ending {
     display: inline-block;
@@ -113,6 +118,7 @@ button,
     padding-left: 0;
 }
 
+/* Give odd list background color */
 .highScores ol li:nth-child(odd) {
     background-color: #E6E6FA;
 }

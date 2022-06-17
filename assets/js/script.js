@@ -14,45 +14,45 @@ var submitBtn = document.querySelector("#submit")
 
 
 
-// Hide questions, ending, highscores
+// Hide questions, ending
 quizEl.setAttribute("style", "display: none;");
 endingEl.setAttribute("style", "display: none;");
 
 // Questions
 var quiz_1 = {
-    question: "What tag is used to define the metadata about an HTML document, and must always be included inside the element?",
-    options: ["<meta>", "<div>", "<img>", "<table>"],
-    correct: "<meta>"
+    question: "The Tag is used To Give Heading To The Table.",
+    options: ["head", "td", "th", "Caption"],
+    correct: "Caption"
 }
 
 var quiz_2 = {
-    question: "What tag is used to render or transform text into an emphasized (italics) version?",
-    options: ["<strong>", "<blockquote>", "<a>", "<em>"],
-    correct: "<em>"
+    question: "If Button is clicked .......Event Handler is invoked.",
+    options: ["OnSubmit()", "OnLoad()", "IsPostBack()", "Onclick()"],
+    correct: "Onclick()"
 }
 
 var quiz_3 = {
-    question: "What tag is required in all HTML documents, and is used to define the title?",
-    options: ["<title></title>", "<br></br>", "<body></body>", "<head></head>"],
-    correct: "<title></title>"
+    question: "JavaScript File Has An Extension of:",
+    options: [".Java", ".Js", ".javascript", ".xml"],
+    correct: ".Js"
 }
 
 var quiz_4 = {
-    question: "What tag is used to define the bottom section (footer) of an HTML document?",
-    options: ["<td>", "<h1> to <h6>", "<footer>", "<button>"],
-    correct: "<footer>"
+    question: "A Function Associated With An object is Called:",
+    options: ["Function", "Method", "Link", "None"],
+    correct: "Method"
 }
 
 var quiz_5 = {
-    question: "What tag is used to define a table or image notation (caption)?",
-    options: ["<!DOCTYPE>", "<caption>", "<embed>", "<code>"],
-    correct: "<caption>"
+    question: "Method Prompt() Contain ........Number of Parameters.",
+    options: ["One", "Two", "Three", "Zero"],
+    correct: "Two"
 }
 
 var quiz_6 = {
-    question: "What tag can be used to insert a line break or blank line in an HTML document?",
-    options: ["<body></body>", "<head></head>", "<br></br>", "<title></title>"],
-    correct: "<br></br>"
+    question: "Which Of The Dialog Box Display a Message And a Data Entry Field?",
+    options: ["Alert()", "Prompt()", "Confirm()", "Msg()"],
+    correct: "Prompt()"
 }
 
 var quiz_all = [quiz_1, quiz_2, quiz_3, quiz_4, quiz_5, quiz_6];
@@ -108,39 +108,45 @@ function postQuiz() {
 function evaluateQuiz() {
     if (!pickedAnswer) {
         return;
-    } else if (i < quiz_all.length - 1) {
+    } else if (i < quiz_all.length-1) {
         optionEl.children[0].replaceWith(optionEl.children[0].cloneNode(true));
         optionEl.children[1].replaceWith(optionEl.children[0].cloneNode(true));
         optionEl.children[2].replaceWith(optionEl.children[0].cloneNode(true));
         optionEl.children[3].replaceWith(optionEl.children[0].cloneNode(true));
 
+        // Pop up answers
         if (pickedAnswer === quiz_all[i]["correct"]) {
             answerEl.textContent = "Correct!";
-            answerEl.setAttribute("style", "color:grey;");
+            answerEl.setAttribute("style", "color:grey;border-top:1px solid grey;");
             pickedAnswer = "";
             score += 10;
         } else {
             answerEl.textContent = "Wrong!";
-            answerEl.setAttribute("style", "color:grey;");
+            answerEl.setAttribute("style", "color:grey;border-top:1px solid grey;");
             secondsLeft = secondsLeft - 20;
             pickedAnswer = "";
         }
 
+        // Reset the answer to white after 1s. Make it "disappear"
         setTimeout(function(){
-            answerEl.setAttribute("style", "color:white;");
+            answerEl.setAttribute("style", "color:white;border-top:1px solid white;");
         },1000)
 
         i += 1;
         postQuiz();
 
     } else {
-        addList();
+        // Wait for one second
+        setTimeout(function(){
+            addList();
+        },1000)
+
+        
 
     }
 }
 
-// Add the score to the local storage.
-
+// Add the score to the local storage. and navigate to highscore page.
 function addList() {
 
     var storedRecord = JSON.parse(localStorage.getItem("records"));
