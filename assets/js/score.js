@@ -5,20 +5,20 @@ var clearBtn = document.querySelector("#clearScore");
 
 
 // View high scores
-function init() {
-    var storedRecord = JSON.parse(localStorage.getItem("record"));
-
-    if (storedRecord !== null) {
-        record = storedRecord;
-    }
-
-    viewScore();
-}
-
 function viewScore() {
 
-    for (var j = 0; j < record.length; j++) {
-        var line = record[j];
+    var storedRecord = JSON.parse(localStorage.getItem("records"));
+
+    if (storedRecord !== null) {
+        var records = storedRecord;
+    } else {
+        return;
+    }
+
+   
+
+    for (var j = 0; j < records.length; j++) {
+        var line = records[j];
 
         var li = document.createElement("li");
         li.textContent = line;
@@ -26,12 +26,11 @@ function viewScore() {
 
         listEl.appendChild(li);
     }
+    
 
 }
 
-viewScore();
-
-
+viewScore()
 
 backBtn.addEventListener("click", function (event) {
     event.preventDefault();
@@ -41,5 +40,6 @@ backBtn.addEventListener("click", function (event) {
 clearBtn.addEventListener("click", function (event) {
     event.preventDefault();
     localStorage.clear();
-    viewScore();
+    window.location.href="score.html";
+
 })

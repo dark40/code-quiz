@@ -128,32 +128,40 @@ function evaluateQuiz() {
 
     } else {
         addList();
-        
+
     }
 }
 
 // Add the score to the local storage.
+
 function addList() {
-        quizEl.setAttribute("style", "display: none;");
-        endingEl.setAttribute("style", "display: block;");
-        scoreEl.textContent = "Your final score is " + score;
 
-        submitBtn.addEventListener("click", function (event) {
-            event.preventDefault();
+    var storedRecord = JSON.parse(localStorage.getItem("records"));
 
-            var highScores = {
-                initials: initialEl.value,
-                scores: score
-            }
+    if (storedRecord !== null) {
+        var record = storedRecord;
+    } else {
+        record=[];
+    }
 
-            var recordText = highScores.initials + " - " + highScores.scores;
-            var record = [];
-            record.push(recordText);
+    quizEl.setAttribute("style", "display: none;");
+    endingEl.setAttribute("style", "display: block;");
+    scoreEl.textContent = "Your final score is " + score;
 
-            localStorage.setItem("record", JSON.stringify(highScores));
+    submitBtn.addEventListener("click", function (event) {
+        event.preventDefault();
 
+        var highScores = {
+            initials: initialEl.value,
+            scores: score
+        }
 
-            window.location.href="score.html";
+        var recordText = highScores.initials + " - " + highScores.scores;
+        record.push(recordText);
 
-        })
+        localStorage.setItem("records", JSON.stringify(record));
+
+        window.location.href = "score.html";
+
+    })
 }
