@@ -115,14 +115,21 @@ function evaluateQuiz() {
         optionEl.children[3].replaceWith(optionEl.children[0].cloneNode(true));
 
         if (pickedAnswer === quiz_all[i]["correct"]) {
-            answerEl.textContent = "Correct";
+            answerEl.textContent = "Correct!";
+            answerEl.setAttribute("style", "color:grey;");
             pickedAnswer = "";
             score += 10;
         } else {
-            answerEl.textContent = "Wrong";
+            answerEl.textContent = "Wrong!";
+            answerEl.setAttribute("style", "color:grey;");
             secondsLeft = secondsLeft - 20;
             pickedAnswer = "";
         }
+
+        setTimeout(function(){
+            answerEl.setAttribute("style", "color:white;");
+        },1000)
+
         i += 1;
         postQuiz();
 
@@ -141,7 +148,7 @@ function addList() {
     if (storedRecord !== null) {
         var record = storedRecord;
     } else {
-        record=[];
+        record = [];
     }
 
     quizEl.setAttribute("style", "display: none;");
