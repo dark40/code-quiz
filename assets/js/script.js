@@ -137,10 +137,21 @@ function evaluateQuiz() {
 
     } else {
         // Wait for one second
+        if (pickedAnswer === quiz_all[i]["correct"]) {
+            answerEl.textContent = "Correct!";
+            answerEl.setAttribute("style", "color:grey;border-top:1px solid grey;");
+            pickedAnswer = "";
+            score += 10;
+        } else {
+            answerEl.textContent = "Wrong!";
+            answerEl.setAttribute("style", "color:grey;border-top:1px solid grey;");
+            secondsLeft = secondsLeft - 20;
+            pickedAnswer = "";
+        }
+
         setTimeout(function(){
             addList();
         },1000)
-
         
 
     }
